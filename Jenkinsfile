@@ -17,19 +17,18 @@ pipeline {
                     )
                 ]) {
                     sh """
-                    # Permiso seguro para la llave 
-                    chmod 600 "$SSH_KEY_FILE"
+# Permiso seguro para la llave 
+chmod 600 "$SSH_KEY_FILE"
 
-                    # Limpiar host antiguos 
-                    ssh-keygen -f "/var/lib/jenkins/.ssh/known_hosts" -R "${params.EC2_IP}" || true
+# Limpiar host antiguos 
+ssh-keygen -f "/var/lib/jenkins/.ssh/known_hosts" -R "${params.EC2_IP}" || true
 
-                    # Conectarse a EC2
-                    ssh -i "$SSH_KEY_FILE" -o StrictHostKeyChecking=no "$EC2_USER"@"${params.EC2_IP}" << EOF
-                    set -e
-                    echo "Conectado a EC2"
-
-                EOF
-                    """
+# Conectarse a EC2
+ssh -i "$SSH_KEY_FILE" -o StrictHostKeyChecking=no "$EC2_USER"@"${params.EC2_IP}" << 'EOF'
+set -e
+echo "Conectado a EC2"
+EOF
+"""
                 }
             }
         }
