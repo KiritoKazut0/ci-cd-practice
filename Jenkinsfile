@@ -1,19 +1,23 @@
 pipeline{
     agent any 
 
-    stages{
-        stage('clone repository'){
-            steps {
-                git branch: 'main', url : "https://github.com/KiritoKazut0/ci-cd-practice.git"
-                echo 'clone repository succefully'
-            }
-        }
+    parameters {
+        string(name: 'EC2_IP', defaultValue: '', description: 'IP de la instancia EC2')
+    }
 
-        stage('checkout repository'){
-          steps{
-              sh 'ls -la'
-          }
-        }
+    stages{
+
+       stage('conected ec2'){
+            steps {
+                sshagent(['ec2-ssh-key']){
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ec2-user@${params.EC2_IP} \\
+                        "echo 'Conectado a EC2'" 
+                       
+                    """
+                }
+            }
+       }
     }
 
 }
