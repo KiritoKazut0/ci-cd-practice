@@ -61,6 +61,17 @@ DOCKER_REPO
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
+# Agregar el usuario actual (ubuntu) al grupo docker
+sudo usermod -aG docker ubuntu
+
+# Aplicar el cambio de grupo inmediatamente
+newgrp docker <<INNER_EOF
+docker --version
+docker ps
+INNER_EOF
+
+echo "Docker instalado y usuario agregado al grupo correctamente."
+
 EOF
 """
                 }
