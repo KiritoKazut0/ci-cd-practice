@@ -27,6 +27,24 @@ ssh-keygen -f "/var/lib/jenkins/.ssh/known_hosts" -R "${params.EC2_IP}" || true
 ssh -i "$SSH_KEY_FILE" -o StrictHostKeyChecking=no "$EC2_USER"@"${params.EC2_IP}" << 'EOF'
 set -e
 echo "Conectado a EC2"
+
+# Actualizar 
+sudo apt update -y 
+cd /home/ubuntu
+
+# Clonar o actualizar solo la rama develop
+if [ -d "ci-cd-practice" ]; then
+    echo "Repositorio ya existe, actualizando rama develop..."
+    cd ci-cd-practice
+    git fetch origin develop
+    git checkout develop
+    git pull origin develop
+else
+    echo "Clonando solo la rama develop..."
+    git clone -b develop --single-branch https://github.com/KiritoKazut0/ci-cd-practice.git ci-cd-practice
+    cd ci-cd-practice
+fi
+
 EOF
 """
                 }
