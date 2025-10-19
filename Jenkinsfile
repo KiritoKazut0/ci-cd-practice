@@ -16,7 +16,7 @@ pipeline {
                         usernameVariable: 'EC2_USER'
                     )
                 ]) {
-                    sh """
+                    sh '''
 # Permiso seguro para la llave 
 chmod 600 "$SSH_KEY_FILE"
 
@@ -60,7 +60,7 @@ else
     echo "Docker ya esta instalado"
 fi
 EOF
-"""
+'''
                 }
             }
         }
